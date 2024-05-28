@@ -22,17 +22,17 @@ class ImageFromAirsimNode(Node):
         from the camera to the topic
         """
 
-        super().__init__("image_from_airsim")
-        self.get_logger().info("Image_from_airsim_node has been started")
+        super().__init__("image_from_sim")
+        self.get_logger().info("Image_from_sim_node has been started")
         self.declare_parameter('host_ip', "172.18.96.1")
         HOST = self.get_parameter('host_ip').get_parameter_value().string_value
-        self.airsim_client = MultirotorClient(ip = HOST, port = 41451)
+        self.sim_client = MultirotorClient(ip = HOST, port = 41451)
         self.is_connected_to_server = self.connect_to_server()
 
         self.cv_bridge = CvBridge()
 
-        self.image_from_airsim_publisher_ = self.create_publisher(msg_type = Image, 
-                                                                topic = "/drone_vision/image_from_airsim",
+        self.image_from_sim_publisher_ = self.create_publisher(msg_type = Image, 
+                                                                topic = "/drone_vision/image_from_sim",
                                                                 qos_profile = 10)
         self.camera_info_publisher_ = self.create_publisher(msg_type = CameraInfo,
                                                             topic = "/drone_vision/camera_info",
@@ -52,7 +52,7 @@ class ImageFromAirsimNode(Node):
 
         try:
             self.get_logger().info("Connecting to server...") 
-            self.airsim_client.confirmConnection()
+            self.sim_client.confirmConnection()
             self.get_logger().info("Connection successful!") 
 
             return True
@@ -62,7 +62,7 @@ class ImageFromAirsimNode(Node):
             self.get_logger().info(str(NameError))
             return False
 
-    def get_image_from_airsim(self) -> np.ndarray:
+    def get_image_from_sim(self) -> np.ndarray:
         """
         Accesses the API and receives an image from the camera, 
         converts it into a format for working in openCV
@@ -71,7 +71,7 @@ class ImageFromAirsimNode(Node):
             ndarray: openCV image
         """
 
-        raw_image_from_airsim = self.airsim_client.simGetImage(camera_name = "0", image_type =  ImageType.Scene)
+        raw_image_from_airsim = self.sim_client.simGetImage(camera_name = "0", image_type =  ImageType.Scene)
         raw_cv2_image = cv2.imdecode(string_to_uint8_array(bstr = raw_image_from_airsim), flags = cv2.IMREAD_UNCHANGED)
             
         return raw_cv2_image
@@ -83,7 +83,7 @@ class ImageFromAirsimNode(Node):
         """
 
         if self.is_connected_to_server is True:
-            image_to_bridge = self.get_image_from_airsim()
+            image_to_bridge = self.get_image_from_sim()
             self.GetCameraInfo()
             
 
@@ -92,8 +92,8 @@ class ImageFromAirsimNode(Node):
             image_to_msg.header.frame_id = 'camera'
             image_to_msg.header.stamp = self.camera_info.header.stamp
             self.camera_info_publisher_.publish(msg = self.camera_info)
-            self.image_from_airsim_publisher_.publish(msg = image_to_msg)
-            
+            self.image_from_sim_publisher_.publish(msg = image_to_msg)
+        
     #publish camera parameters
     def GetCameraInfo(self):
         if self.camera_info is None:

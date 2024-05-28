@@ -12,7 +12,7 @@
   <depend>geometry_msgs</depend>
   <depend>std_msgs</depend>
   <depend>eagle_eye_msgs</depend>
-  <depend>airsim</depend>
+  <depend>agrotechsim</depend>
   <depend>aruco_marker_recognizer.py</depend>
 
 

@@ -32,7 +32,7 @@ class GetImuAndBar(Node):
         self.declare_parameter('host_ip', "172.18.96.1")
         HOST = "172.18.96.1"#self.get_parameter('host_ip').get_parameter_value().string_value
         PORT = 41451
-        self.sim_client = MultirotorClient(ip = HOST,port = PORT)
+        self.airsim_client = MultirotorClient(ip = HOST,port = PORT)
         self.is_connected_to_server = self.connect_to_server()
         
         
@@ -47,7 +47,7 @@ class GetImuAndBar(Node):
 
         try:
             self.get_logger().info("Connecting to server...") 
-            self.sim_client.confirmConnection()
+            self.airsim_client.confirmConnection()
             self.get_logger().info("Connection successful!") 
 
             return True
@@ -61,8 +61,8 @@ class GetImuAndBar(Node):
         if self.is_connected_to_server is True:
             msg = Imu()
             try:
-                bar_data = self.sim_client.getBarometerData()
-                imu_data = self.sim_client.getImuData()
+                bar_data = self.airsim_client.getBarometerData()
+                imu_data = self.airsim_client.getImuData()
                 if self.altitude_at_start is None:
                     self.altitude_at_start = bar_data.altitude
 

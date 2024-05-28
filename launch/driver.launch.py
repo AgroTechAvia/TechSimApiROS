@@ -14,8 +14,8 @@ def generate_launch_description():
         
         Node(
             package='computer_vision_functionality',
-            executable='get_image_from_airsim_node',
-            name='get_image_from_airsim_node',
+            executable='get_image_from_sim_node',
+            name='get_image_from_sim_node',
             output='screen',
             parameters=[
                 {'host_ip': host_ip}

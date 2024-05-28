@@ -21,12 +21,12 @@ class LidarReaderClass(Node):
         from the lidar to the topic
         """
         
-        super().__init__("point_cloud_from_airsim")
+        super().__init__("point_cloud_from_sim")
 
-        self.get_logger().info("Point_cloud_by_lidar_from_airsim_node has been started")
+        self.get_logger().info("Point_cloud_by_lidar_from_sim_node has been started")
         self.declare_parameter('host_ip', "172.18.96.1")
         HOST = self.get_parameter('host_ip').get_parameter_value().string_value
-        self.airsim_client = MultirotorClient(ip = HOST, port = 41451)
+        self.sim_client = MultirotorClient(ip = HOST, port = 41451)
         self.is_connected_to_server = self.connect_to_server()
 
         self.point_cloud_from_airsim_publisher_ = self.create_publisher(msg_type = PointCloud2, 
@@ -46,7 +46,7 @@ class LidarReaderClass(Node):
 
         try:
             self.get_logger().info("Connecting to server...") 
-            self.airsim_client.confirmConnection()
+            self.sim_client.confirmConnection()
             self.get_logger().info("Connection successful!") 
 
             return True
@@ -66,7 +66,7 @@ class LidarReaderClass(Node):
         if self.is_connected_to_server is True:
 
             for i in range(1,2):
-                lidarData = self.airsim_client.getLidarData()
+                lidarData = self.sim_client.getLidarData()
                 if (len(lidarData.point_cloud) < 3):
                     pass
                     #self.get_logger().info("\tNo points received from Lidar data")
