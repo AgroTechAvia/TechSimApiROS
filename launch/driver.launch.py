@@ -8,10 +8,69 @@ from launch.substitutions import LaunchConfiguration
 from launch.actions import ExecuteProcess
 from launch.substitutions import FindExecutable
 
-host_ip = os.environ.get('HOST_WSL_IP')
 def generate_launch_description():
-    return LaunchDescription([
-        
+
+    launch_description = LaunchDescription()
+
+    declare_ip_address_cmd = DeclareLaunchArgument(
+        'ip_address',
+        default_value='172.18.96.1',  
+        description='IP address to use for the nodes'
+    )
+
+    declare_port_cmd = DeclareLaunchArgument(
+        'port',
+        default_value= '41451',  
+        description='Port to use for the nodes'
+    )
+
+    get_image_from_sim_node = Node(
+        package = 'computer_vision_functionality',
+        executable = 'get_image_from_sim_node',
+        name='get_image_from_sim_node',
+        output='screen',
+        parameters=[
+            {'host_ip':LaunchConfiguration('ip_address')},
+            {'port':LaunchConfiguration('port')}
+        ]
+    )
+
+    recognition_of_aruco_marker_node = Node(
+        package = 'computer_vision_functionality',
+        executable = 'recognition_of_aruco_marker_node',
+        name='recognition_of_aruco_marker_node',
+        output='screen'
+    )
+
+    read_lidar_point_cloud_node = Node(
+        package = 'computer_vision_functionality',
+        executable = 'read_lidar_point_cloud_node',
+        name='read_lidar_point_cloud_node',
+        output='screen',
+        parameters=[
+            {'host_ip':LaunchConfiguration('ip_address')},
+            {'port':LaunchConfiguration('port')}
+        ]
+    )
+
+    rviz2_launcher = Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            output='screen',
+            parameters=[{'rviz_config': '/home/user/.rviz2/sim_config.rviz'}]
+        )
+
+    launch_description.add_action(declare_ip_address_cmd)
+    launch_description.add_action(declare_port_cmd)
+    launch_description.add_action(get_image_from_sim_node)
+    launch_description.add_action(recognition_of_aruco_marker_node)
+    launch_description.add_action(read_lidar_point_cloud_node)
+    launch_description.add_action(rviz2_launcher)
+
+    return launch_description
+    
+    '''LaunchDescription([
         Node(
             package='computer_vision_functionality',
             executable='get_image_from_sim_node',
@@ -20,85 +79,5 @@ def generate_launch_description():
             parameters=[
                 {'host_ip': host_ip}
             ]
-        ),
-        Node(
-            package='computer_vision_functionality',
-            executable='read_lidar_point_cloud_node',
-            name='read_lidar_point_cloud_node',
-            output='screen',
-            parameters=[
-                {'host_ip': host_ip}
-            ]
-        ) 
-        ,
-        
-         Node(
-            package='computer_vision_functionality',
-            executable='get_imu_and_bar_data_node',
-            name='get_imu_and_bar_data_node',
-            output='screen',
-            parameters=[
-                {'host_ip': host_ip}
-            ]
-        ),
-        Node(
-            package='computer_vision_functionality',
-            executable='sim_driver_node',
-            name='sim_driver_node',
-            output='screen',
-            parameters=[
-                {'host_ip': host_ip}
-            ]
-        ),
-        #  Node(
-        #     package='pointcloud_to_laserscan',
-        #     executable='pointcloud_to_laserscan_node',
-        #     name='pointcloud_to_laserscan_node',
-        #     output='screen',
-        #     remappings=[
-        #         ('cloud_in', '/drone_vision/point_cloud'),
-        #         ('scan', '/drone_vision/LaserScan')
-        #     ],
-        #      parameters=[
-                
-        #         {'min_height': -0.5},
-        #         {'max_height': 10.0},
-        #         {'target_frame': "lidar"},
-        #         {'angle_increment': 0.01}
-                
-        #     ]
-
-        # ),
-         Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            name='base_link_to_laser_scan',
-            arguments=[
-                '--x', '0', '--y', '0', '--z', '0.15',
-                '--qx', '0', '--qy', '0', '--qz', '0', '--qw', '1',
-                '--frame-id', 'base_link', '--child-frame-id', 'laser_scan'
-            ]
-        ),
-                 Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            name='base_link_to_lidar',
-            arguments=[
-                '--x', '0', '--y', '0', '--z', '0.15',
-                '--qx', '0', '--qy', '0', '--qz', '0', '--qw', '1',
-                '--frame-id', 'base_link', '--child-frame-id', 'lidar'
-            ]
-        ),
-                 Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            name='base_link_to_camera',
-            arguments=[
-                '--x', '0.05', '--y', '0', '--z', '0.1',
-                '--qx', '0', '--qy', '0', '--qz', '0', '--qw', '1',
-                '--frame-id', 'base_link', '--child-frame-id', 'camera'
-            ]
         )
-
- 
-    ])
+    ])'''
