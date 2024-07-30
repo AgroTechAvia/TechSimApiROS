@@ -92,7 +92,7 @@ class ImageFromAirsimNode(Node):
             self.GetCameraInfo()
             
 
-            rgb_image_to_bridge = cv2.cvtColor(src = image_to_bridge, code = cv2.COLOR_RGBA2RGB)
+            rgb_image_to_bridge = cv2.cvtColor(src = image_to_bridge, code = cv2.COLOR_RGBA2BGR)
             image_to_msg = self.cv_bridge.cv2_to_imgmsg(cvim = rgb_image_to_bridge, encoding = "rgb8")
             image_to_msg.header.frame_id = 'camera'
             image_to_msg.header.stamp = self.camera_info.header.stamp
