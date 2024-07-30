@@ -26,10 +26,7 @@ setup(
             "recognition_of_aruco_marker_node = computer_vision_functionality.recognition_of_aruco_marker_node:main",
             "read_lidar_point_cloud_node = computer_vision_functionality.get_point_cloud_by_lidar_from_sim_node:main",
             "sim_driver_node = computer_vision_functionality.sim_driver:main",
-            "teleop_node = computer_vision_functionality.teleop:main",
-            "get_imu_and_bar_data_node = computer_vision_functionality.get_imu_and_bar_data_node:main",
-            "example = computer_vision_functionality.example:main"
-
+            "teleop_node = computer_vision_functionality.teleop:main"
         ],
     },
 )
