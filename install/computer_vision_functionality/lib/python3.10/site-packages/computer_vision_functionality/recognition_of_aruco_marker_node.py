@@ -56,7 +56,7 @@ class RecognitionOfArucoMarker(Node):
             msg_imag (Image): message with an image from the topic
         """
 
-        cv_image = self.cv_bridge.imgmsg_to_cv2(img_msg = msg_image, desired_encoding = "bgr8")
+        cv_image = self.cv_bridge.imgmsg_to_cv2(img_msg = msg_image, desired_encoding = "rgb8")
 
         cv_image_with_markers, markers_ids, rotation_vectors, translation_vectors = self.aruco_recognizer.detect_aruco_markers(cv_image)
 
