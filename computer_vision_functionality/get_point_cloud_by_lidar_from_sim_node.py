@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import QoSProfile, QoSReliabilityPolicy, qos_profile_sensor_data
 
 from .agrotechsimapi import *
 
@@ -8,7 +9,7 @@ import numpy as np
 import pprint
 import matplotlib.pyplot as plt
 
-from sensor_msgs.msg import PointCloud2, PointField
+from sensor_msgs.msg import PointCloud2, PointField, LaserScan
 
 class LidarReaderClass(Node):
 
@@ -33,9 +34,10 @@ class LidarReaderClass(Node):
         self.sim_client = MultirotorClient(ip = HOST, port = PORT)
         self.is_connected_to_server = self.connect_to_server()
 
+
         self.point_cloud_from_airsim_publisher_ = self.create_publisher(msg_type = PointCloud2, 
                                                                 topic = "/drone_vision/point_cloud",
-                                                                qos_profile = 10)
+                                                                qos_profile =  qos_profile_sensor_data)
         
         
         self.publisher_timer_ = self.create_timer(timer_period_sec = 0.1, callback = self.lidar_callback)
@@ -73,7 +75,7 @@ class LidarReaderClass(Node):
                 lidarData = self.sim_client.getLidarData()
                 if (len(lidarData.point_cloud) < 3):
                     pass
-                    #self.get_logger().info("\tNo points received from Lidar data")
+                    self.get_logger().info("\tNo points received from Lidar data")
                 else:
                     points = self.parse_lidarData(lidarData)
 
@@ -99,8 +101,9 @@ class LidarReaderClass(Node):
                     msg.data = point_cloud_data
 
                     self.point_cloud_from_airsim_publisher_.publish(msg)
-
-                    #self.get_logger().info("\tReading %d: time_stamp: %d number_of_points: %d" % (i, lidarData.time_stamp, len(points)))
+                    self.get_logger().info("\tReading %d: time_stamp: %d number_of_points: %d" % (i, lidarData.time_stamp, len(points)))
+        else:
+            self.get_logger().info("\tNot connected")
 
     def parse_lidarData(self, data):
 
@@ -113,7 +116,7 @@ class LidarReaderClass(Node):
 def main(args = None):
     rclpy.init(args = args)
 
-    image_from_airsim_node = LidarReaderClass()
-    rclpy.spin(image_from_airsim_node)
+    points_cloud_from_airsim_node = LidarReaderClass()
+    rclpy.spin(points_cloud_from_airsim_node)
 
     rclpy.shutdown()
