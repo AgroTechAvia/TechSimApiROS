@@ -24,9 +24,7 @@ setup(
         'console_scripts': [
             "get_image_from_sim_node = computer_vision_functionality.get_image_from_sim_node:main",
             "recognition_of_aruco_marker_node = computer_vision_functionality.recognition_of_aruco_marker_node:main",
-            "read_lidar_point_cloud_node = computer_vision_functionality.get_point_cloud_by_lidar_from_sim_node:main",
-            "sim_driver_node = computer_vision_functionality.sim_driver:main",
-            "teleop_node = computer_vision_functionality.teleop:main"
+            "read_lidar_point_cloud_node = computer_vision_functionality.get_point_cloud_by_lidar_from_sim_node:main"
         ],
     },
 )

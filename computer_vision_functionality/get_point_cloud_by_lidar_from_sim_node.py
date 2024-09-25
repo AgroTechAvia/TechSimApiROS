@@ -36,7 +36,7 @@ class LidarReaderClass(Node):
 
 
         self.point_cloud_from_airsim_publisher_ = self.create_publisher(msg_type = PointCloud2, 
-                                                                topic = "/drone_vision/point_cloud",
+                                                                topic = "/drone_sensors/point_cloud",
                                                                 qos_profile =  qos_profile_sensor_data)
         
         
@@ -101,7 +101,6 @@ class LidarReaderClass(Node):
                     msg.data = point_cloud_data
 
                     self.point_cloud_from_airsim_publisher_.publish(msg)
-                    self.get_logger().info("\tReading %d: time_stamp: %d number_of_points: %d" % (i, lidarData.time_stamp, len(points)))
         else:
             self.get_logger().info("\tNot connected")
 

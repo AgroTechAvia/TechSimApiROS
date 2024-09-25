@@ -4,8 +4,6 @@
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/get_image_from_sim_node.py
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/__init__.py
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/recognition_setting.py
-/home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/teleop.py
-/home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/sim_driver.py
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/agrotechsimapi/pfm.py
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/agrotechsimapi/__init__.py
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/agrotechsimapi/utils.py
@@ -17,8 +15,6 @@
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/__pycache__/get_image_from_sim_node.cpython-310.pyc
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/__pycache__/__init__.cpython-310.pyc
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/__pycache__/recognition_setting.cpython-310.pyc
-/home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/__pycache__/teleop.cpython-310.pyc
-/home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/__pycache__/sim_driver.cpython-310.pyc
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/agrotechsimapi/__pycache__/pfm.cpython-310.pyc
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/agrotechsimapi/__pycache__/__init__.cpython-310.pyc
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/agrotechsimapi/__pycache__/utils.cpython-310.pyc
@@ -26,7 +22,8 @@
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/agrotechsimapi/__pycache__/types.cpython-310.pyc
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/share/ament_index/resource_index/packages/computer_vision_functionality
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/share/computer_vision_functionality/package.xml
-/home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/share/computer_vision_functionality/driver.launch.py
+/home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/share/computer_vision_functionality/lidar.launch.py
+/home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/share/computer_vision_functionality/vision.launch.py
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality-0.0.0-py3.10.egg-info/dependency_links.txt
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality-0.0.0-py3.10.egg-info/entry_points.txt
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality-0.0.0-py3.10.egg-info/requires.txt
@@ -37,5 +34,3 @@
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/computer_vision_functionality/get_image_from_sim_node
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/computer_vision_functionality/read_lidar_point_cloud_node
 /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/computer_vision_functionality/recognition_of_aruco_marker_node
-/home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/computer_vision_functionality/sim_driver_node
-/home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/computer_vision_functionality/teleop_node
