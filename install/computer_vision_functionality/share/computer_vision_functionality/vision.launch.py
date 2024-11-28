@@ -17,7 +17,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'port',
-            default_value='41451',
+            default_value='8080',
             description='Port to use for the nodes'
         ),
         Node(
@@ -35,6 +35,13 @@ def generate_launch_description():
             executable='recognition_of_aruco_marker_node',
             name='recognition_of_aruco_marker_node',
             output='screen'
+        ),
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            output='screen',
+            arguments=['-d', '/home/user/.rviz2/vision_launch.rviz']
         )
     ])
     

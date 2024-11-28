@@ -17,7 +17,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'port',
-            default_value='41451',
+            default_value='8080',
             description='Port to use for the nodes'
         ),
         Node(
@@ -35,8 +35,19 @@ def generate_launch_description():
             executable='pointcloud_to_laserscan_node',
             name='pointcloud_to_laserscan_node',
             output='screen',
+            parameters=[
+                {'host_ip':LaunchConfiguration('ip_address')},
+                {'port':LaunchConfiguration('port')}
+            ]
+        )
+        '''Node(
+            package='pointcloud_to_laserscan',
+            executable='pointcloud_to_laserscan_node',
+            name='pointcloud_to_laserscan_node',
+            output='screen',
             remappings=[
-                ('cloud_in', '/drone_vision/point_cloud') 
+                ('cloud_in', '/drone_sensors/point_cloud'),
+                ('scan', '/drone_sensors/scan') 
             ],
             parameters=[   
                 {'min_height': -3.0},
@@ -75,7 +86,14 @@ def generate_launch_description():
                 '--qx', '0', '--qy', '0', '--qz', '0', '--qw', '1',
                 '--frame-id', 'base_link', '--child-frame-id', 'camera'
             ]
-        )
+        ),
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            output='screen',
+            arguments=['-d', '/home/user/.rviz2/lidar_launch.rviz']
+        )'''
 
     ])
     

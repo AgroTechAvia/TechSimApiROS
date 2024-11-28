@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import QoSProfile, QoSReliabilityPolicy, qos_profile_sensor_data
 
 from .agrotechsimapi import *
 
@@ -8,7 +9,7 @@ import numpy as np
 import pprint
 import matplotlib.pyplot as plt
 
-from sensor_msgs.msg import PointCloud2, PointField
+from sensor_msgs.msg import PointCloud2, PointField, LaserScan
 
 class LidarReaderClass(Node):
 
@@ -25,18 +26,29 @@ class LidarReaderClass(Node):
 
         self.get_logger().info("Point_cloud_by_lidar_from_sim_node has been started")
         self.declare_parameter('host_ip', "172.18.96.1")
+        self.declare_parameter('port', 8080)
+        
         HOST = self.get_parameter('host_ip').get_parameter_value().string_value
-        self.sim_client = MultirotorClient(ip = HOST, port = 41451)
-        self.is_connected_to_server = self.connect_to_server()
+        PORT = self.get_parameter('port').get_parameter_value().integer_value
+        
+        self.is_connected_to_server = False
+        
+        try:
+            self.sim_client = SimClient(address = HOST, port = PORT)
+            self.is_connected_to_server = True
+        except:
+            self.get_logger().info("Connection error")
+        
 
-        self.point_cloud_from_airsim_publisher_ = self.create_publisher(msg_type = PointCloud2, 
-                                                                topic = "/drone_vision/point_cloud",
-                                                                qos_profile = 10)
+
+        self.point_cloud_from_airsim_publisher_ = self.create_publisher(msg_type = LaserScan, 
+                                                                topic = "/drone_sensors/LaserScan",
+                                                                qos_profile =  10)
         
         
         self.publisher_timer_ = self.create_timer(timer_period_sec = 0.1, callback = self.lidar_callback)
 
-    def connect_to_server(self) -> bool:
+    '''def connect_to_server(self) -> bool:
         """
         Connects to the airsim API and returns a status flag
 
@@ -54,7 +66,7 @@ class LidarReaderClass(Node):
         except:
             self.get_logger().info("Connection error")
 
-            return False
+            return False'''
         
 
     def lidar_callback(self):
@@ -63,13 +75,26 @@ class LidarReaderClass(Node):
         if there was a connection to the server
         """
 
-        if self.is_connected_to_server is True:
+        laser_scan = LaserScan()
+
+        laser_scan.angle_min = -1.57  # Минимальный угол
+        laser_scan.angle_max = 1.57    # Максимальный угол
+        laser_scan.angle_increment = 0.01  # Шаг угла
+        laser_scan.time_increment = 0.0
+        laser_scan.scan_time = 0.1
+        laser_scan.range_min = 0.1
+        laser_scan.range_max = 10.0
+
+        result = self.sim_client.get_laser_scan(angle_min=-1.57, angle_max=1.57, range_min = 0.1, range_max=10, num_ranges=315, is_clear=True)
+        self.point_cloud_from_airsim_publisher_.publish(result)
+
+        '''if self.is_connected_to_server is True:
 
             for i in range(1,2):
                 lidarData = self.sim_client.getLidarData()
                 if (len(lidarData.point_cloud) < 3):
                     pass
-                    #self.get_logger().info("\tNo points received from Lidar data")
+                    self.get_logger().info("\tNo points received from Lidar data")
                 else:
                     points = self.parse_lidarData(lidarData)
 
@@ -95,8 +120,8 @@ class LidarReaderClass(Node):
                     msg.data = point_cloud_data
 
                     self.point_cloud_from_airsim_publisher_.publish(msg)
-
-                    #self.get_logger().info("\tReading %d: time_stamp: %d number_of_points: %d" % (i, lidarData.time_stamp, len(points)))
+        else:
+            self.get_logger().info("\tNot connected")'''
 
     def parse_lidarData(self, data):
 
@@ -109,7 +134,7 @@ class LidarReaderClass(Node):
 def main(args = None):
     rclpy.init(args = args)
 
-    image_from_airsim_node = LidarReaderClass()
-    rclpy.spin(image_from_airsim_node)
+    points_cloud_from_airsim_node = LidarReaderClass()
+    rclpy.spin(points_cloud_from_airsim_node)
 
     rclpy.shutdown()

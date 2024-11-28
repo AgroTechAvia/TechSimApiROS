@@ -1,1 +1,1 @@
-agrotechsim:aruco_marker_recognizer.py:geometry_msgs:rclpy:sensor_msgs:std_msgs
+agrotechsimapi:aruco_marker_recognizer.py:geometry_msgs:rclpy:sensor_msgs:std_msgs

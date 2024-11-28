@@ -16,10 +16,9 @@ computer_vision_functionality/get_point_cloud_by_lidar_from_sim_node.py
 computer_vision_functionality/recognition_of_aruco_marker_node.py
 computer_vision_functionality/recognition_setting.py
 computer_vision_functionality/agrotechsimapi/__init__.py
+computer_vision_functionality/agrotechsimapi/_version.py
 computer_vision_functionality/agrotechsimapi/client.py
-computer_vision_functionality/agrotechsimapi/pfm.py
-computer_vision_functionality/agrotechsimapi/types.py
-computer_vision_functionality/agrotechsimapi/utils.py
+computer_vision_functionality/agrotechsimapi/signal_utils.py
 launch/lidar.launch.py
 launch/vision.launch.py
 resource/computer_vision_functionality

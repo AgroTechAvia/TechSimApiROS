@@ -2,7 +2,7 @@
 import rclpy
 from rclpy.node import Node
 
-from .agrotechsimapi import *
+from .agrotechsimapi import SimClient
 
 import cv2
 from cv_bridge import CvBridge
@@ -25,14 +25,14 @@ class ImageFromAirsimNode(Node):
         super().__init__("image_from_sim")
         self.get_logger().info("Image_from_sim_node has been started")
         self.declare_parameter('host_ip', "172.18.96.1")
-        self.declare_parameter('port', 41451)
+        self.declare_parameter('port', 8080)
         
         HOST = self.get_parameter('host_ip').get_parameter_value().string_value
         PORT = self.get_parameter('port').get_parameter_value().integer_value
         
-        self.sim_client = MultirotorClient(ip = HOST, port = PORT)
-
-        self.is_connected_to_server = self.connect_to_server()
+        self.sim_client = SimClient(address = HOST, port = PORT)
+ 
+        #self.is_connected_to_server = self.connect_to_server()
 
         self.cv_bridge = CvBridge()
 
@@ -47,7 +47,7 @@ class ImageFromAirsimNode(Node):
         
         self.publisher_timer_ = self.create_timer(timer_period_sec = 0.05, callback = self.image_callback)
 
-    def connect_to_server(self) -> bool:
+    '''def connect_to_server(self) -> bool:
         """
         Connects to the airsim API and returns a status flag
 
@@ -65,7 +65,7 @@ class ImageFromAirsimNode(Node):
         except NameError:
             self.get_logger().info("Connection error")
             self.get_logger().info(str(NameError))
-            return False
+            return False'''
 
     def get_image_from_sim(self) -> np.ndarray:
         """
@@ -76,8 +76,8 @@ class ImageFromAirsimNode(Node):
             ndarray: openCV image
         """
 
-        raw_image_from_airsim = self.sim_client.simGetImage(camera_name = "0", image_type =  ImageType.Scene)
-        raw_cv2_image = cv2.imdecode(string_to_uint8_array(bstr = raw_image_from_airsim), flags = cv2.IMREAD_UNCHANGED)
+        raw_cv2_image = self.sim_client.get_camera_capture(camera_id = 0, is_clear=True) #raw_image_from_airsim
+        #raw_cv2_image = cv2.imdecode(string_to_uint8_array(bstr = raw_image_from_airsim), flags = cv2.IMREAD_UNCHANGED)
             
         return raw_cv2_image
 
@@ -87,17 +87,18 @@ class ImageFromAirsimNode(Node):
         if there was a connection to the server
         """
 
-        if self.is_connected_to_server is True:
-            image_to_bridge = self.get_image_from_sim()
-            self.GetCameraInfo()
-            
+        #if self.is_connected_to_server is True:
+        image_to_bridge = self.get_image_from_sim()
+        self.GetCameraInfo()
+        
 
-            rgb_image_to_bridge = cv2.cvtColor(src = image_to_bridge, code = cv2.COLOR_RGBA2RGB)
-            image_to_msg = self.cv_bridge.cv2_to_imgmsg(cvim = rgb_image_to_bridge, encoding = "rgb8")
-            image_to_msg.header.frame_id = 'camera'
-            image_to_msg.header.stamp = self.camera_info.header.stamp
-            self.camera_info_publisher_.publish(msg = self.camera_info)
-            self.image_from_sim_publisher_.publish(msg = image_to_msg)
+        rgb_image_to_bridge = cv2.cvtColor(src = image_to_bridge, code = cv2.COLOR_RGBA2BGR)
+        
+        image_to_msg = self.cv_bridge.cv2_to_imgmsg(cvim = rgb_image_to_bridge, encoding = "rgb8")
+        image_to_msg.header.frame_id = 'camera'
+        image_to_msg.header.stamp = self.camera_info.header.stamp
+        self.camera_info_publisher_.publish(msg = self.camera_info)
+        self.image_from_sim_publisher_.publish(msg = image_to_msg)
         
     #publish camera parameters
     def GetCameraInfo(self):

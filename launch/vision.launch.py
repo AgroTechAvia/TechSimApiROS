@@ -17,7 +17,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'port',
-            default_value='41451',
+            default_value='8080',
             description='Port to use for the nodes'
         ),
         Node(
