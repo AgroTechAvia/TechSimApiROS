@@ -3,7 +3,7 @@ import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, qos_profile_sensor_data
 
-from .agrotechsimapi import *
+from computer_vision_functionality.agrotechsimapi.client import SimClient
 
 import numpy as np
 import pprint
@@ -31,15 +31,9 @@ class LidarReaderClass(Node):
         HOST = self.get_parameter('host_ip').get_parameter_value().string_value
         PORT = self.get_parameter('port').get_parameter_value().integer_value
         
-        self.is_connected_to_server = False
+        self.sim_client = SimClient(address = "172.18.96.1", port = 8080)
+        self.get_logger().info(f"state = {self.sim_client.is_connected()}" )
         
-        try:
-            self.sim_client = SimClient(address = HOST, port = PORT)
-            self.is_connected_to_server = True
-        except:
-            self.get_logger().info("Connection error")
-        
-
 
         self.point_cloud_from_airsim_publisher_ = self.create_publisher(msg_type = LaserScan, 
                                                                 topic = "/drone_sensors/LaserScan",
@@ -74,19 +68,21 @@ class LidarReaderClass(Node):
         Saves the point cloud from the lidar to the topic 
         if there was a connection to the server
         """
+        result = self.sim_client.get_laser_scan(angle_min=-np.pi, angle_max=np.pi, range_min = 0.1, range_max=10, num_ranges=360, is_clear=True)
 
         laser_scan = LaserScan()
 
-        laser_scan.angle_min = -1.57  # Минимальный угол
-        laser_scan.angle_max = 1.57    # Максимальный угол
-        laser_scan.angle_increment = 0.01  # Шаг угла
+        laser_scan.angle_min = -np.pi  # Минимальный угол
+        laser_scan.angle_max = np.pi    # Максимальный угол
+        laser_scan.angle_increment = 1  # Шаг угла
         laser_scan.time_increment = 0.0
         laser_scan.scan_time = 0.1
         laser_scan.range_min = 0.1
         laser_scan.range_max = 10.0
-
-        result = self.sim_client.get_laser_scan(angle_min=-1.57, angle_max=1.57, range_min = 0.1, range_max=10, num_ranges=315, is_clear=True)
-        self.point_cloud_from_airsim_publisher_.publish(result)
+        
+        laser_scan.ranges = result 
+        
+        self.point_cloud_from_airsim_publisher_.publish(laser_scan)
 
         '''if self.is_connected_to_server is True:
 
