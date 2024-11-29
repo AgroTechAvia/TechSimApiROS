@@ -1,0 +1,31 @@
+[0.764s] Invoking command in '/home/user/ros2_ws/src/TechSimApiROS': PYTHONPATH=/home/user/ros2_ws/src/TechSimApiROS/build/computer_vision_functionality/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base build/computer_vision_functionality build --build-base /home/user/ros2_ws/src/TechSimApiROS/build/computer_vision_functionality/build install --record /home/user/ros2_ws/src/TechSimApiROS/build/computer_vision_functionality/install.log --single-version-externally-managed install_data
+[1.018s] running egg_info
+[1.019s] writing build/computer_vision_functionality/computer_vision_functionality.egg-info/PKG-INFO
+[1.020s] writing dependency_links to build/computer_vision_functionality/computer_vision_functionality.egg-info/dependency_links.txt
+[1.021s] writing entry points to build/computer_vision_functionality/computer_vision_functionality.egg-info/entry_points.txt
+[1.021s] writing requirements to build/computer_vision_functionality/computer_vision_functionality.egg-info/requires.txt
+[1.021s] writing top-level names to build/computer_vision_functionality/computer_vision_functionality.egg-info/top_level.txt
+[1.023s] reading manifest file 'build/computer_vision_functionality/computer_vision_functionality.egg-info/SOURCES.txt'
+[1.024s] writing manifest file 'build/computer_vision_functionality/computer_vision_functionality.egg-info/SOURCES.txt'
+[1.024s] running build
+[1.024s] running build_py
+[1.025s] copying computer_vision_functionality/agrotechsimapi/client.py -> /home/user/ros2_ws/src/TechSimApiROS/build/computer_vision_functionality/build/lib/computer_vision_functionality/agrotechsimapi
+[1.025s] running install
+[1.025s] running install_lib
+[1.027s] copying /home/user/ros2_ws/src/TechSimApiROS/build/computer_vision_functionality/build/lib/computer_vision_functionality/agrotechsimapi/client.py -> /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/agrotechsimapi
+[1.028s] byte-compiling /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/agrotechsimapi/client.py to client.cpython-310.pyc
+[1.028s]   File "/home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality/agrotechsimapi/client.py", line 34
+[1.029s]     self.rpc_client = msgpackrpc.Client(msgpackrpc.Address("172.18.96.1", 8080)) '''msgpackrpc.Client(msgpackrpc.Address(address, port), 
+[1.029s]                                                                                  
+[1.029s] SyntaxError: invalid syntax
+[1.029s] 
+[1.029s] running install_data
+[1.029s] running install_egg_info
+[1.031s] removing '/home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality-0.0.0-py3.10.egg-info' (and everything under it)
+[1.031s] Copying build/computer_vision_functionality/computer_vision_functionality.egg-info to /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages/computer_vision_functionality-0.0.0-py3.10.egg-info
+[1.034s] running install_scripts
+[1.053s] Installing get_image_from_sim_node script to /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/computer_vision_functionality
+[1.053s] Installing read_lidar_point_cloud_node script to /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/computer_vision_functionality
+[1.053s] Installing recognition_of_aruco_marker_node script to /home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/computer_vision_functionality
+[1.053s] writing list of installed files to '/home/user/ros2_ws/src/TechSimApiROS/build/computer_vision_functionality/install.log'
+[1.097s] Invoked command in '/home/user/ros2_ws/src/TechSimApiROS' returned '0': PYTHONPATH=/home/user/ros2_ws/src/TechSimApiROS/build/computer_vision_functionality/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/ros2_ws/src/TechSimApiROS/install/computer_vision_functionality/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base build/computer_vision_functionality build --build-base /home/user/ros2_ws/src/TechSimApiROS/build/computer_vision_functionality/build install --record /home/user/ros2_ws/src/TechSimApiROS/build/computer_vision_functionality/install.log --single-version-externally-managed install_data

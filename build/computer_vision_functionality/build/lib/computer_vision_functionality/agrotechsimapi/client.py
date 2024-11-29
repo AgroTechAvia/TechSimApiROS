@@ -27,14 +27,14 @@ def post_process(image, gamma=1.0, new_size=(800, 600), saturation=1.0, contrast
 
 class SimClient():
     def __init__(self, 
-                 address : str = "127.0.0.1" , 
+                 address : str = "172.18.96.1" , 
                  port : int = 8080):
         self.address =  address
         self.port = port
-        self.rpc_client = msgpackrpc.Client(msgpackrpc.Address(self.address, self.port), 
-                                            timeout = 10, 
+        self.rpc_client = msgpackrpc.Client(msgpackrpc.Address("172.18.96.1", 8080)) '''msgpackrpc.Client(msgpackrpc.Address(address, port), 
+                                            timeout = 3600, 
                                             pack_encoding = 'utf-8', 
-                                            unpack_encoding = 'utf-8')
+                                            unpack_encoding = 'utf-8')'''
         
     def add_noise(self,image):
         noise = np.random.normal(0, 1, image.shape).astype(np.uint8)

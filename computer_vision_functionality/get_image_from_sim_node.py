@@ -2,7 +2,7 @@
 import rclpy
 from rclpy.node import Node
 
-from .agrotechsimapi.client import SimClient
+from computer_vision_functionality.agrotechsimapi.client import SimClient
 
 import cv2
 from cv_bridge import CvBridge
@@ -29,8 +29,9 @@ class ImageFromAirsimNode(Node):
         
         HOST = self.get_parameter('host_ip').get_parameter_value().string_value
         PORT = self.get_parameter('port').get_parameter_value().integer_value
-        
-        self.sim_client = SimClient(address = HOST, port = PORT)
+        self.sim_client = SimClient(address = "172.18.96.1", port = 8080)
+        self.get_logger().info(f"state = {self.sim_client.is_connected()}" )
+
  
         #self.is_connected_to_server = self.connect_to_server()
 
@@ -45,7 +46,7 @@ class ImageFromAirsimNode(Node):
         self.camera_info = None
 
         
-        self.publisher_timer_ = self.create_timer(timer_period_sec = 0.05, callback = self.image_callback)
+        self.publisher_timer_ = self.create_timer(timer_period_sec = 0.1, callback = self.image_callback)
 
     '''def connect_to_server(self) -> bool:
         """
