@@ -125,6 +125,8 @@ class SimClient():
                                                    range_min, 
                                                    range_max, 
                                                    num_ranges)
+
+        #laser_scan_data = np.flip(laser_scan_data)
         
         if(is_clear == False and len(laser_scan_data) == num_ranges):
             noise = np.random.normal(0, range_error, num_ranges)

@@ -31,18 +31,18 @@ class LidarReaderClass(Node):
         HOST = self.get_parameter('host_ip').get_parameter_value().string_value
         PORT = self.get_parameter('port').get_parameter_value().integer_value
         
-        self.sim_client = SimClient(address = "172.18.96.1", port = 8080)
-        self.get_logger().info(f"state = {self.sim_client.is_connected()}" )
+        self.sim_client = SimClient(address = HOST, port = PORT)
         
+        self.is_connected_to_server = self.connect_to_server()
 
         self.point_cloud_from_airsim_publisher_ = self.create_publisher(msg_type = LaserScan, 
-                                                                topic = "/drone_sensors/LaserScan",
+                                                                topic = "/drone_sensors/laser_scan",
                                                                 qos_profile =  10)
         
         
         self.publisher_timer_ = self.create_timer(timer_period_sec = 0.1, callback = self.lidar_callback)
 
-    '''def connect_to_server(self) -> bool:
+    def connect_to_server(self) -> bool:
         """
         Connects to the airsim API and returns a status flag
 
@@ -52,7 +52,7 @@ class LidarReaderClass(Node):
 
         try:
             self.get_logger().info("Connecting to server...") 
-            self.sim_client.confirmConnection()
+            self.sim_client.is_connected()
             self.get_logger().info("Connection successful!") 
 
             return True
@@ -60,7 +60,7 @@ class LidarReaderClass(Node):
         except:
             self.get_logger().info("Connection error")
 
-            return False'''
+            return False
         
 
     def lidar_callback(self):
@@ -68,64 +68,34 @@ class LidarReaderClass(Node):
         Saves the point cloud from the lidar to the topic 
         if there was a connection to the server
         """
-        result = self.sim_client.get_laser_scan(angle_min=-np.pi, angle_max=np.pi, range_min = 0.1, range_max=10, num_ranges=360, is_clear=True)
 
-        laser_scan = LaserScan()
+        if self.is_connected_to_server is True:
 
-        laser_scan.angle_min = -np.pi  # Минимальный угол
-        laser_scan.angle_max = np.pi    # Максимальный угол
-        laser_scan.angle_increment = 1  # Шаг угла
-        laser_scan.time_increment = 0.0
-        laser_scan.scan_time = 0.1
-        laser_scan.range_min = 0.1
-        laser_scan.range_max = 10.0
-        
-        laser_scan.ranges = result 
-        
-        self.point_cloud_from_airsim_publisher_.publish(laser_scan)
+            ranges_data = self.sim_client.get_laser_scan(angle_min=-np.pi, 
+                                                        angle_max=np.pi, 
+                                                        range_min = 0.1, 
+                                                        range_max=10, 
+                                                        num_ranges=360, 
+                                                        is_clear=True)
 
-        '''if self.is_connected_to_server is True:
+            
+            ranges_data = ranges_data[::-1]
 
-            for i in range(1,2):
-                lidarData = self.sim_client.getLidarData()
-                if (len(lidarData.point_cloud) < 3):
-                    pass
-                    self.get_logger().info("\tNo points received from Lidar data")
-                else:
-                    points = self.parse_lidarData(lidarData)
+            laser_scan = LaserScan()
+            laser_scan.header.frame_id = "laser_scan"
+            laser_scan.header.stamp = self.get_clock().now().to_msg()
 
-                    msg = PointCloud2()
-                    msg.header.stamp = self.get_clock().now().to_msg()
-                    msg.header.frame_id = 'lidar'
-                    msg.height = 1  # Unordered point cloud
-                    msg.width = len(points)  # 100 points
-
-                    point_cloud_data = points.tobytes()
-
-                    msg.fields = [
-                    PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
-                    PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
-                    PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
-                    #PointField(name='ring', offset=12, datatype=PointField.FLOAT32, count=1),
-                    ]
-
-                    msg.is_bigendian = False
-                    msg.point_step = 12  
-                    msg.row_step = msg.point_step * msg.width  
-                    msg.is_dense = True
-                    msg.data = point_cloud_data
-
-                    self.point_cloud_from_airsim_publisher_.publish(msg)
-        else:
-            self.get_logger().info("\tNot connected")'''
-
-    def parse_lidarData(self, data):
-
-        # reshape array of floats to array of [X,Y,Z]
-        points = np.array(data.point_cloud, dtype=np.dtype('f4'))
-        points = np.reshape(points, (int(points.shape[0]/3), 3))
-       
-        return points
+            laser_scan.angle_min = -np.pi 
+            laser_scan.angle_max = np.pi    
+            laser_scan.angle_increment = np.deg2rad(1)  
+            laser_scan.time_increment = 0.0
+            laser_scan.scan_time = 0.1
+            laser_scan.range_min = 0.1
+            laser_scan.range_max = 10.0
+            
+            laser_scan.ranges = ranges_data 
+            
+            self.point_cloud_from_airsim_publisher_.publish(laser_scan)
 
 def main(args = None):
     rclpy.init(args = args)

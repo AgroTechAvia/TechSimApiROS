@@ -38,8 +38,15 @@ def generate_launch_description():
             arguments=[
                 '--x', '0', '--y', '0', '--z', '0.15',
                 '--qx', '0', '--qy', '0', '--qz', '0', '--qw', '1',
-                '--frame-id', 'base_link', '--child-frame-id', 'laser_scan'
+                '--frame-id', 'map', '--child-frame-id', 'laser_scan'
             ]
+        ),
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            output='screen',
+            arguments=['-d', '/home/user/.rviz2/lidar_launch.rviz']
         )
     ])
     
