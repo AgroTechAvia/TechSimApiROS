@@ -65,6 +65,9 @@ class RecognitionOfArucoMarker(Node):
             self.image_with_marker_publisher_.publish(msg = image_with_markers_to_msg)
 
             self.position_and_orientation_detecting(markers_ids, rotation_vectors, translation_vectors)
+        else:
+
+            self.image_with_marker_publisher_.publish(msg = msg_image)
            
 
     
@@ -80,16 +83,21 @@ class RecognitionOfArucoMarker(Node):
 
         if ids is not None:
             for i in range(len(ids)):
+
+                self.get_logger().info(f"marker_{str(ids[i])} transform: {tvec[i]}")
+
                 marker_transform = TransformStamped()
                 marker_transform.header.frame_id = "camera_frame"
                 marker_transform.child_frame_id = "marker_" + str(ids[i])
-                marker_transform.transform.translation.x = float(tvec[i][0][0])
-                marker_transform.transform.translation.y = float(tvec[i][0][1])
-                marker_transform.transform.translation.z = float(tvec[i][0][2])
+                marker_transform.transform.translation.x = float(tvec[i][0])
+                marker_transform.transform.translation.y = float(tvec[i][1])
+                marker_transform.transform.translation.z = float(tvec[i][2])
 
-                marker_transform.transform.rotation.x = float(rvec[i][0][0])
-                marker_transform.transform.rotation.y = float(rvec[i][0][1])
-                marker_transform.transform.rotation.z = float(rvec[i][0][2])
+                
+
+                marker_transform.transform.rotation.x = float(rvec[i][0])
+                marker_transform.transform.rotation.y = float(rvec[i][1])
+                marker_transform.transform.rotation.z = float(rvec[i][2])
 
                 self.marker_tf_publisher_.publish(marker_transform)
 

@@ -2,7 +2,7 @@
 import rclpy
 from rclpy.node import Node
 
-from computer_vision_functionality.agrotechsimapi.client import SimClient
+from agrotechsimapi import SimClient
 
 import cv2
 from cv_bridge import CvBridge

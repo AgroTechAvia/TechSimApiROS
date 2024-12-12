@@ -3,7 +3,7 @@ import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, qos_profile_sensor_data
 
-from computer_vision_functionality.agrotechsimapi.client import SimClient
+from agrotechsimapi import SimClient
 
 import numpy as np
 import pprint
