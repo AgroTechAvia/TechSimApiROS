@@ -8,6 +8,21 @@ from launch.substitutions import LaunchConfiguration
 from launch.actions import ExecuteProcess
 from launch.substitutions import FindExecutable
 
+current_directory = os.path.dirname(os.path.abspath(__file__))
+current_directory_split = current_directory.split('/')
+
+remove_directory = "install/computer_vision_functionality/share/computer_vision_functionality"
+remove_directory_split = remove_directory.split('/')
+
+for remove_dir in remove_directory_split:
+    current_directory_split.remove(remove_dir)
+
+current_directory =  '/'.join(current_directory_split)
+
+relative_path = "src/TechSimApiROS/launch/rviz_configs/vision_launch.rviz"
+absolute_path = os.path.join(current_directory, relative_path)
+
+
 def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -41,7 +56,7 @@ def generate_launch_description():
             executable='rviz2',
             name='rviz2',
             output='screen',
-            arguments=['-d', '/home/user/.rviz2/vision_launch.rviz']
+            arguments=['-d', absolute_path]
         )
     ])
     
